@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis"
+	"github.com/redis/go-redis/v9"
 )
 
 func LikeArticle(ctx *gin.Context) {
@@ -14,7 +14,7 @@ func LikeArticle(ctx *gin.Context) {
 
 	likeKey := "article:" + articleID + ":likes"
 
-	if err := global.RedisDB.Incr(likeKey).Err(); err != nil {
+	if err := global.RedisDB.Incr(ctx, likeKey).Err(); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -27,7 +27,7 @@ func GetArticleLikes(ctx *gin.Context) {
 
 	likeKey := "article:" + articleID + ":likes"
 
-	likes, err := global.RedisDB.Get(likeKey).Int()
+	likes, err := global.RedisDB.Get(ctx, likeKey).Int()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
 			likes = 0

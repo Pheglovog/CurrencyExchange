@@ -1,10 +1,11 @@
 package config
 
 import (
+	"context"
 	"exchangeapp/global"
 	"log"
 
-	"github.com/go-redis/redis"
+	"github.com/redis/go-redis/v9"
 )
 
 func InitRedis() {
@@ -15,7 +16,7 @@ func InitRedis() {
 		DB:       0,  // use default DB
 	})
 	// Ping redis
-	_, err := RedisClient.Ping().Result()
+	_, err := RedisClient.Ping(context.Background()).Result()
 	if err != nil {
 		log.Fatalf("Failed to connect to Redis, got error: %v", err)
 	}
