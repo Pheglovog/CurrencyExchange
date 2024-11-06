@@ -7,6 +7,7 @@ import (
 
 func main() {
 	config.InitConfig()
+
 	r := router.SetupRouter()
 	listenAddr := config.AppConfig.App.Host + ":" + config.AppConfig.App.Port
 	if config.AppConfig.App.Host == "" || config.AppConfig.App.Port == "" {
